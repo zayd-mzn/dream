@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cgciaoqq6lmuy"]
 
 [ext_resource type="Script" uid="uid://chaeg4obc2n0u" path="res://scripts/enemies/cockroach.gd" id="1_q5o5c"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_hitbox.gd" id="2_5y1xv"]
 [ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="2_vungn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e46"]
@@ -14,4 +15,10 @@ modulate = Color(1, 0, 0, 1)
 texture = ExtResource("2_vungn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1350815176]
+shape = SubResource("RectangleShape2D_e5e46")
+
+[node name="HitBox" type="Area2D" parent="." unique_id=212409978]
+script = ExtResource("2_5y1xv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=815203792]
 shape = SubResource("RectangleShape2D_e5e46")

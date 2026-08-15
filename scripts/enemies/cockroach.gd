@@ -3,8 +3,10 @@ extends Enemy
 
 @export var target: Node2D
 
-func _physics_process(delta: float) -> void:
-	if target:
-		var direction: Vector2 = (target.global_position - global_position).normalized()
-		velocity = direction * move_speed
-		move_and_slide()
+func _physics_process(_delta: float) -> void:
+  if target == null:
+    return
+
+  var direction: Vector2 = global_position.direction_to(target.global_position)
+  velocity = direction * move_speed
+  move_and_slide()
