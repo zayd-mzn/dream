@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bcxayf32iyqpe"]
 
 [ext_resource type="PackedScene" uid="uid://cy4od01tmsrhw" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://biaknimy5lvfd" path="res://scripts/main.gd" id="1_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://cbioha31mxv6l" path="res://scenes/sndala.tscn" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://cgciaoqq6lmuy" path="res://scenes/enemies/cockroach_normal.tscn" id="4_jyhfs"]
@@ -8,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://e1py5clfkasc" path="res://scenes/enemies/cockroach_big.tscn" id="6_o6xl0"]
 
 [node name="main" type="Node2D" unique_id=336483515]
+script = ExtResource("1_o6xl0")
 
 [node name="Player" parent="." unique_id=1996761387 instance=ExtResource("1_o5qli")]
 position = Vector2(296, 331)
@@ -38,3 +40,21 @@ target = NodePath("../Player")
 [node name="cockroach_big" parent="." unique_id=1008863398 node_paths=PackedStringArray("target") instance=ExtResource("6_o6xl0")]
 position = Vector2(1081, 362)
 target = NodePath("../Player")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=10086083]
+
+[node name="Control" type="Control" parent="UI" unique_id=390954742]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WakeUpBar" type="ProgressBar" parent="UI/Control" unique_id=587966417]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 203.0
+offset_top = 5.0
+offset_right = 831.0
+offset_bottom = 45.0
+grow_horizontal = 2
