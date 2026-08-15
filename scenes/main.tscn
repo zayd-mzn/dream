@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bcxayf32iyqpe"]
+
+[ext_resource type="PackedScene" uid="uid://cy4od01tmsrhw" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://cbioha31mxv6l" path="res://scenes/sndala.tscn" id="2_sugp2"]
+[ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="3_jyhfs"]
+
+[node name="main" type="Node2D" unique_id=336483515]
+
+[node name="Player" parent="." unique_id=1996761387 instance=ExtResource("1_o5qli")]
+position = Vector2(296, 331)
+
+[node name="Sndala" parent="." unique_id=134151983 instance=ExtResource("2_sugp2")]
+position = Vector2(425, 329)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1575763302]
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=557834941]
+position = Vector2(-30.5, 298.5)
+scale = Vector2(0.5234375, 5.6640625)
+texture = ExtResource("3_jyhfs")
+
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1447216084]
+position = Vector2(555, -36)
+scale = Vector2(9.671875, 0.4375)
+texture = ExtResource("3_jyhfs")
