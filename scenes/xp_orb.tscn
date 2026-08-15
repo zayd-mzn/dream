@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/xp_orb.gd" id="1_f8k0p"]
+[ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="2_r0o9w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3q6c2"]
+radius = 12.0
+
+[node name="XPOrb" type="Area2D"]
+script = ExtResource("1_f8k0p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.8, 0.9, 1, 1)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_r0o9w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3q6c2")

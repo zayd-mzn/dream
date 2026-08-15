@@ -10,6 +10,7 @@ size = Vector2(110, 110)
 [node name="cockroach_fast" type="CharacterBody2D" unique_id=1252364376]
 script = ExtResource("1_62ty7")
 move_speed = 150.0
+xp_value = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=899802083]
 modulate = Color(1, 1, 0, 1)

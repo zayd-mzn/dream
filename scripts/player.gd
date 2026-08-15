@@ -3,6 +3,7 @@ extends CharacterBody2D
 # Signals
 signal wake_up_changed(current_value: float, max_value: float)
 signal player_woke_up
+signal xp_changed(current_xp: int)
 
 # Movement & Combat parameters
 @export var speed: float = 220.0
@@ -10,6 +11,7 @@ signal player_woke_up
 
 # Wake-up Bar Settings (Replaces HP)
 @export var max_wake_up: float = 100.0
+var current_xp: int = 0
 var current_wake_up: float = 0.0
 var is_invulnerable: bool = false
 var is_dead: bool = false
@@ -146,6 +148,10 @@ func increase_wake_up(amount: float) -> void:
 	
 	if current_wake_up >= max_wake_up:
 		trigger_wake_up()
+
+func collect_xp(amount: int) -> void:
+	current_xp += amount
+	xp_changed.emit(current_xp)
 
 func trigger_wake_up() -> void:
 	is_dead = true
