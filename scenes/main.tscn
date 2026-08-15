@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://cy4od01tmsrhw" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://cbioha31mxv6l" path="res://scenes/sndala.tscn" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="3_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://cgciaoqq6lmuy" path="res://scenes/enemies/cockroach_normal.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://cnntnt7bpg3uc" path="res://scenes/enemies/cockroach_fast.tscn" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://e1py5clfkasc" path="res://scenes/enemies/cockroach_big.tscn" id="6_o6xl0"]
 
 [node name="main" type="Node2D" unique_id=336483515]
 
@@ -23,3 +26,15 @@ texture = ExtResource("3_jyhfs")
 position = Vector2(555, -36)
 scale = Vector2(9.671875, 0.4375)
 texture = ExtResource("3_jyhfs")
+
+[node name="cockroach_normal" parent="." unique_id=1252364376 node_paths=PackedStringArray("target") instance=ExtResource("4_jyhfs")]
+position = Vector2(777, 266)
+target = NodePath("../Player")
+
+[node name="cockroach_fast" parent="." unique_id=1622560219 node_paths=PackedStringArray("target") instance=ExtResource("5_tefeu")]
+position = Vector2(851, 90)
+target = NodePath("../Player")
+
+[node name="cockroach_big" parent="." unique_id=1008863398 node_paths=PackedStringArray("target") instance=ExtResource("6_o6xl0")]
+position = Vector2(1081, 362)
+target = NodePath("../Player")
