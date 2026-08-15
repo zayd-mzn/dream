@@ -35,3 +35,13 @@ shape = SubResource("RectangleShape2D_yf5fn")
 
 [node name="SndalaSpawnPoint" type="Marker2D" parent="ShootPivot" unique_id=905506221]
 position = Vector2(79, -3)
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1325513931]
+offset_left = -67.0
+offset_top = -111.0
+offset_right = 73.0
+offset_bottom = -69.0
+theme_override_font_sizes/font_size = 48
+value = 100.0
+fill_mode = 1
+show_percentage = false

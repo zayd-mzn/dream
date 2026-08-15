@@ -31,14 +31,24 @@ texture = ExtResource("3_jyhfs")
 
 [node name="cockroach_normal" parent="." unique_id=1252364376 node_paths=PackedStringArray("target") instance=ExtResource("4_jyhfs")]
 position = Vector2(777, 266)
+max_health = null
+move_speed = null
+contact_damage = null
+xp_value = null
 target = NodePath("../Player")
 
 [node name="cockroach_fast" parent="." unique_id=1622560219 node_paths=PackedStringArray("target") instance=ExtResource("5_tefeu")]
 position = Vector2(851, 90)
+max_health = null
+contact_damage = null
+xp_value = null
 target = NodePath("../Player")
 
 [node name="cockroach_big" parent="." unique_id=1008863398 node_paths=PackedStringArray("target") instance=ExtResource("6_o6xl0")]
 position = Vector2(1081, 362)
+max_health = null
+contact_damage = null
+xp_value = null
 target = NodePath("../Player")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=10086083]
@@ -49,7 +59,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="WakeUpBar" type="ProgressBar" parent="UI/Control" unique_id=587966417]
+[node name="XpBar" type="ProgressBar" parent="UI/Control" unique_id=587966417]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0

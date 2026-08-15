@@ -12,21 +12,21 @@ signal damaged(enemy: Enemy, damage_amount: float)
 var health: float = max_health
 
 func _ready() -> void:
-  add_to_group("enemies")
-  health = max_health
+	add_to_group("enemies")
+	health = max_health
 
-  for other_enemy: Node in get_tree().get_nodes_in_group("enemies"):
-    if other_enemy != self and other_enemy is PhysicsBody2D:
-      add_collision_exception_with(other_enemy)
-      other_enemy.add_collision_exception_with(self)
+	for other_enemy: Node in get_tree().get_nodes_in_group("enemies"):
+		if other_enemy != self and other_enemy is PhysicsBody2D:
+			add_collision_exception_with(other_enemy)
+			other_enemy.add_collision_exception_with(self)
 
 func take_damage(damage_amount: float) -> void:
-  health -= damage_amount
-  emit_signal("damaged", self, damage_amount)
+	health -= damage_amount
+	damaged.emit(self, damage_amount)
 
-  if health <= 0:
-    die()
+	if health <= 0:
+		die()
 
 func die() -> void:
-  emit_signal("died", self)
-  queue_free()
+	died.emit(self)
+	queue_free()
