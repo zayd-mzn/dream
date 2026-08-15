@@ -2,13 +2,49 @@
 
 [ext_resource type="Script" uid="uid://culdmao5m55tt" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="PackedScene" uid="uid://cbioha31mxv6l" path="res://scenes/sndala.tscn" id="2_dqkch"]
-[ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="2_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://drm5t8jlhlnrf" path="res://assets/character/lhajja.png" id="3_qhqgy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("3_qhqgy")
+region = Rect2(0, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("3_qhqgy")
+region = Rect2(640, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
+atlas = ExtResource("3_qhqgy")
+region = Rect2(1280, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
+atlas = ExtResource("3_qhqgy")
+region = Rect2(1920, 0, 640, 640)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjrip")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 8.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
-size = Vector2(128, 127)
+size = Vector2(263, 551)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yf5fn"]
-size = Vector2(130, 125)
+size = Vector2(264, 541)
 
 [node name="Player" type="CharacterBody2D" unique_id=1996761387]
 script = ExtResource("1_g2els")
@@ -16,17 +52,19 @@ sndala_scene = ExtResource("2_dqkch")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1130327269]
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1791777168]
-texture = ExtResource("2_qhqgy")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1953448278]
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+animation = &"walk"
+frame_progress = 0.35874745
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=619286443]
-position = Vector2(1, -0.5)
+position = Vector2(14.5, -14.5)
 shape = SubResource("RectangleShape2D_g4v7s")
 
 [node name="HitBox" type="Area2D" parent="." unique_id=13808891]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1734694498]
-position = Vector2(1, 0.5)
+position = Vector2(11, -12.5)
 shape = SubResource("RectangleShape2D_yf5fn")
 
 [node name="SpecialCooldown" type="Timer" parent="." unique_id=1385616625]
@@ -37,13 +75,13 @@ one_shot = true
 [node name="ShootPivot" type="Node2D" parent="." unique_id=1006773178]
 
 [node name="SndalaSpawnPoint" type="Marker2D" parent="ShootPivot" unique_id=905506221]
-position = Vector2(79, -3)
+position = Vector2(-140, 3)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1325513931]
-offset_left = -67.0
-offset_top = -111.0
-offset_right = 73.0
-offset_bottom = -69.0
+offset_left = -117.0
+offset_top = -341.0
+offset_right = 133.0
+offset_bottom = -307.0
 theme_override_font_sizes/font_size = 48
 value = 100.0
 fill_mode = 1
