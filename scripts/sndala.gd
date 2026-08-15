@@ -8,6 +8,7 @@ extends Area2D
 @onready var screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
 
 func _ready() -> void:
+	add_to_group("Weapon")
 	area_entered.connect(_on_area_entered)
 	screen_notifier.screen_exited.connect(queue_free)
 
