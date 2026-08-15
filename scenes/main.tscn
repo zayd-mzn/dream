@@ -31,24 +31,16 @@ texture = ExtResource("3_jyhfs")
 
 [node name="cockroach_normal" parent="." unique_id=1252364376 node_paths=PackedStringArray("target") instance=ExtResource("4_jyhfs")]
 position = Vector2(777, 266)
-max_health = null
-move_speed = null
-contact_damage = null
-xp_value = null
 target = NodePath("../Player")
+xp_value = 2
 
 [node name="cockroach_fast" parent="." unique_id=1622560219 node_paths=PackedStringArray("target") instance=ExtResource("5_tefeu")]
 position = Vector2(851, 90)
-max_health = null
-contact_damage = null
-xp_value = null
 target = NodePath("../Player")
+xp_value = 1
 
 [node name="cockroach_big" parent="." unique_id=1008863398 node_paths=PackedStringArray("target") instance=ExtResource("6_o6xl0")]
 position = Vector2(1081, 362)
-max_health = null
-contact_damage = null
-xp_value = null
 target = NodePath("../Player")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=10086083]
@@ -56,8 +48,7 @@ target = NodePath("../Player")
 [node name="Control" type="Control" parent="UI" unique_id=390954742]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="XpBar" type="ProgressBar" parent="UI/Control" unique_id=587966417]
 layout_mode = 1
@@ -68,8 +59,6 @@ offset_top = 5.0
 offset_right = 831.0
 offset_bottom = 45.0
 grow_horizontal = 2
-max_value = 100.0
-value = 0.0
 show_percentage = false
 
 [node name="ClockLabel" type="Label" parent="UI/Control" unique_id=2138706747]
@@ -81,3 +70,37 @@ offset_bottom = 52.0
 text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ShootLabel" type="Label" parent="UI/Control" unique_id=2058808451]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.919
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 862.0
+offset_top = 552.0
+offset_right = 952.0
+offset_bottom = 597.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "Shoot"
+
+[node name="ShootCooldown" type="ProgressBar" parent="UI/Control" unique_id=1395344196]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 979.0
+offset_top = 560.0
+offset_right = 1143.0
+offset_bottom = 591.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+max_value = 1.0
+value = 1.0
+show_percentage = false

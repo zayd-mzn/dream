@@ -31,6 +31,9 @@ shape = SubResource("RectangleShape2D_yf5fn")
 
 [node name="SpecialCooldown" type="Timer" parent="." unique_id=1385616625]
 
+[node name="ShootCooldown" type="Timer" parent="." unique_id=1620119834]
+one_shot = true
+
 [node name="ShootPivot" type="Node2D" parent="." unique_id=1006773178]
 
 [node name="SndalaSpawnPoint" type="Marker2D" parent="ShootPivot" unique_id=905506221]
