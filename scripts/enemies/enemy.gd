@@ -35,6 +35,8 @@ func _ready() -> void:
 
 func take_damage(damage_amount: float) -> void:
   health -= damage_amount
+  if get_tree().current_scene and get_tree().current_scene.has_method("show_damage_number"):
+    get_tree().current_scene.show_damage_number(global_position, damage_amount, Color(1.0, 0.8, 0.35, 1.0))
   damaged.emit(self, damage_amount)
 
   if health <= 0:

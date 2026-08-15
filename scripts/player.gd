@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const MODIFIER_FACTORY = preload("res://scripts/modifiers/modifier_factory.gd")
+
 # Signals
 signal wake_up_changed(current_value: float, max_value: float)
 signal player_woke_up
@@ -8,6 +10,7 @@ signal health_changed(current_hp: float, max_hp: float)
 signal player_died
 
 # Movement & Combat parameters
+@export var base_speed: float = 220.0
 @export var speed: float = 220.0
 @export var sndala_scene: PackedScene
 @export var contact_damage_interval: float = 0.35
@@ -19,9 +22,14 @@ signal player_died
 var current_xp: int = 0
 var current_wake_up: float = 0.0
 var current_hp: float = 100.0
+var level: int = 1
+var xp_to_next_level: int = 10
+var level_up_bonus: int = 5
 var is_invulnerable: bool = false
 var is_dead: bool = false
 var last_contact_damage_time: float = 0.0
+var damage_bonus: float = 1.0
+var speed_multiplier: float = 1.0
 
 # Camera Shake Settings
 @export var max_shake_offset: float = 8.0
@@ -56,6 +64,7 @@ func _ready() -> void:
   # Initialize stats
   current_hp = max_hp
   current_wake_up = 0.0
+  xp_to_next_level = get_xp_threshold_for_level(level)
   if health_bar:
     health_bar.max_value = max_hp
     health_bar.value = current_hp
@@ -110,6 +119,8 @@ func shoot_sndala() -> void:
   add_trauma(0.1)
   
   var sndala = sndala_scene.instantiate()
+  if "damage" in sndala:
+    sndala.damage *= damage_bonus
   sndala.global_position = spawn_point.global_position
   sndala.rotation = shoot_pivot.global_rotation
   get_tree().current_scene.add_child(sndala)
@@ -122,6 +133,9 @@ func use_special_ability() -> void:
 func take_damage(amount: float = 15.0, source_position: Vector2 = Vector2.ZERO) -> void:
   if is_invulnerable or is_dead:
     return
+
+  if get_tree().current_scene and get_tree().current_scene.has_method("show_damage_number"):
+    get_tree().current_scene.show_damage_number(global_position, amount, Color(1.0, 0.35, 0.35, 1.0))
 
   current_hp = max(0.0, current_hp - amount)
   update_health_ui()
@@ -194,6 +208,9 @@ func handle_contact_damage() -> void:
       take_damage(dmg, area.global_position)
       return
 
+func get_xp_threshold_for_level(level_number: int) -> int:
+  return int(10 + (level_number - 1) * 8)
+
 func increase_wake_up(amount: float) -> void:
   current_wake_up = min(max_wake_up, current_wake_up + amount)
   wake_up_changed.emit(current_wake_up, max_wake_up)
@@ -203,11 +220,48 @@ func increase_wake_up(amount: float) -> void:
 
 func collect_xp(amount: int) -> void:
   current_xp += amount
+  while current_xp >= xp_to_next_level:
+    current_xp -= xp_to_next_level
+    level += 1
+    xp_to_next_level = get_xp_threshold_for_level(level)
+    trigger_level_up()
+  update_xp_bar()
   xp_changed.emit(current_xp)
+
+func update_xp_bar() -> void:
+  if not is_inside_tree():
+    return
+  var bar = get_tree().current_scene.get_node_or_null("UI/Control/XpBar")
+  if bar:
+    bar.max_value = xp_to_next_level
+    bar.value = current_xp
+    var tween = create_tween()
+    tween.tween_property(bar, "value", current_xp, 0.12)
+
+func trigger_level_up() -> void:
+  player_woke_up.emit()
+  var modifiers = MODIFIER_FACTORY.get_random_modifiers(3)
+  if get_tree().current_scene and get_tree().current_scene.has_method("open_modifier_menu"):
+    get_tree().current_scene.open_modifier_menu(modifiers)
 
 func trigger_wake_up() -> void:
   player_woke_up.emit()
   print("Wake Up complete!")
+
+func apply_speed_modifier(multiplier: float) -> void:
+  speed_multiplier *= multiplier
+  speed = base_speed * speed_multiplier
+
+func apply_damage_modifier(multiplier: float) -> void:
+  damage_bonus *= multiplier
+
+func apply_max_health_modifier(extra_hp: float) -> void:
+  max_hp += extra_hp
+  current_hp = min(max_hp, current_hp + extra_hp)
+  if health_bar:
+    health_bar.max_value = max_hp
+    health_bar.value = current_hp
+  health_changed.emit(current_hp, max_hp)
 
 func die() -> void:
   is_dead = true
