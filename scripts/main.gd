@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var player: CharacterBody2D = $Player
-@onready var wake_up_bar: ProgressBar = get_node_or_null("UI/Control/WakeUpBar")
+@onready var xp_bar: ProgressBar = get_node_or_null("UI/Control/XpBar")
 
 func _ready() -> void:
   if player:
@@ -12,22 +12,21 @@ func _ready() -> void:
     if player.has_signal("player_died"):
       player.player_died.connect(_on_player_died)
     
-    if wake_up_bar:
-      wake_up_bar.max_value = player.max_wake_up
-      wake_up_bar.value = player.current_wake_up
+    if xp_bar:
+      xp_bar.max_value = player.max_wake_up
+      xp_bar.value = player.current_wake_up
 
 func _on_player_wake_up_changed(current_value: float, max_value: float) -> void:
-  if not wake_up_bar:
+  if not xp_bar:
     return
-  wake_up_bar.max_value = max_value
+  xp_bar.max_value = max_value
   
-  # Smooth bar transition using a tween
   var tween = create_tween()
-  tween.tween_property(wake_up_bar, "value", current_value, 0.15)
+  tween.tween_property(xp_bar, "value", current_value, 0.15)
 
 func _on_player_woke_up() -> void:
-  if wake_up_bar:
-    wake_up_bar.value = wake_up_bar.max_value
+  if xp_bar:
+    xp_bar.value = xp_bar.max_value
 
 func _on_player_died() -> void:
   print("Game Over: Player Died!")

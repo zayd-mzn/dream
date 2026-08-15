@@ -50,7 +50,8 @@ func _ready() -> void:
     invuln_timer.name = "InvincibilityTimer"
     invuln_timer.one_shot = true
     add_child(invuln_timer)
-    invuln_timer.timeout.connect(_on_invincibility_timeout)
+    if not invuln_timer.timeout.is_connected(_on_invincibility_timeout):
+      invuln_timer.timeout.connect(_on_invincibility_timeout)
   
   # Initialize stats
   current_hp = max_hp
@@ -65,11 +66,10 @@ func _ready() -> void:
     camera.ignore_rotation = true
     
   if hurtbox:
-    hurtbox.area_entered.connect(_on_hurtbox_area_entered)
-    hurtbox.monitoring = true
-    hurtbox.monitorable = true
-  if invuln_timer:
-    invuln_timer.timeout.connect(_on_invincibility_timeout)
+    if not hurtbox.area_entered.is_connected(_on_hurtbox_area_entered):
+      hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+    hurtbox.set_deferred("monitoring", true)
+    hurtbox.set_deferred("monitorable", true)
 
 func _physics_process(delta: float) -> void:
   if is_dead:
