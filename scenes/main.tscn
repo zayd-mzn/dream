@@ -16,7 +16,7 @@ position = Vector2(296, 331)
 
 [node name="Sndala" parent="." unique_id=134151983 instance=ExtResource("2_sugp2")]
 position = Vector2(425, 329)
-
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1575763302]
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=557834941]

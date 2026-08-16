@@ -13,7 +13,7 @@ var attack_timer: float = 0.0
 
 func _ready() -> void:
   super._ready()
-  max_health = 90.0
+  max_health = 180.0
   move_speed = 90.0
   contact_damage = 12.0
   health = max_health

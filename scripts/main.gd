@@ -7,6 +7,7 @@ const MODIFIER_FACTORY = preload("res://scripts/modifiers/modifier_factory.gd")
 @onready var clock_label: Label = get_node_or_null("UI/Control/ClockLabel")
 @onready var shoot_bar: ProgressBar = get_node_or_null("UI/Control/ShootCooldown")
 @onready var shoot_label: Label = get_node_or_null("UI/Control/ShootLabel")
+@onready var music_player: AudioStreamPlayer = $MusicPlayer
 
 var elapsed_time: float = 0.0
 var spawn_interval: float = 2.5
@@ -30,6 +31,12 @@ func _ready() -> void:
   _setup_spawn_timer()
   _build_modifier_menu()
   _build_game_over_overlay()
+
+  if music_player:
+    music_player.stream = load("res://assets/uhhhhhhhhh.mp3")
+    music_player.finished.connect(_on_music_finished)
+    music_player.volume_db = -4.0
+    music_player.play()
 
   if player:
     if player.has_signal("xp_changed"):
@@ -193,21 +200,20 @@ func _spawn_enemy() -> void:
 
 func _choose_enemy_scene() -> PackedScene:
   var time_based_roll: float = elapsed_time
+  var player_level: int = 1
+  if player:
+    player_level = int(player.level)
+
+  if player_level >= 3:
+    if randf() < 0.14:
+      return rare_enemy_scenes.pick_random()
 
   if time_based_roll >= 45.0:
-    if randf() < 0.17:
-      return rare_enemy_scenes.pick_random()
     return enemy_scenes.pick_random()
   if time_based_roll >= 25.0:
-    if randf() < 0.12:
-      return rare_enemy_scenes.pick_random()
     return enemy_scenes[randi_range(1, enemy_scenes.size() - 1)]
   if time_based_roll >= 12.0:
-    if randf() < 0.08:
-      return rare_enemy_scenes.pick_random()
     return enemy_scenes[randi_range(0, 1)]
-  if randf() < 0.04:
-    return rare_enemy_scenes.pick_random()
   return enemy_scenes[0]
 
 func _get_spawn_position() -> Vector2:
@@ -331,6 +337,10 @@ func _build_game_over_overlay() -> void:
   restart_button.custom_minimum_size = Vector2(180, 48)
   restart_button.pressed.connect(_restart_game)
   vbox.add_child(restart_button)
+
+func _on_music_finished() -> void:
+  if music_player:
+    music_player.play()
 
 func _on_player_shot_fired() -> void:
   shoot_cooldown_elapsed = 0.0
