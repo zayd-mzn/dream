@@ -1,20 +1,21 @@
 [gd_scene format=3 uid="uid://dftw7xy8n7v6y"]
 
-[ext_resource type="Script" path="res://scripts/enemies/jinn_projectile.gd" id="1_4abcx"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+[ext_resource type="Script" uid="uid://w87mg8ty78ei" path="res://scripts/enemies/jinn_projectile.gd" id="1_4abcx"]
+[ext_resource type="Texture2D" uid="uid://cj5yyt442j38" path="res://assets/sandal.png" id="2_d45di"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_projectile"]
 size = Vector2(34, 34)
 
-[node name="jinn_projectile" type="Area2D"]
+[node name="jinn_projectile" type="Area2D" unique_id=655044591]
 script = ExtResource("1_4abcx")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_icon")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1714403905]
+texture_filter = 1
+scale = Vector2(5, 5)
+texture = ExtResource("2_d45di")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1748453978]
 shape = SubResource("RectangleShape2D_projectile")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=968811339]
 rect = Rect2(-20, -20, 40, 40)

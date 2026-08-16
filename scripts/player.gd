@@ -11,18 +11,18 @@ signal player_died
 signal shot_fired
 
 # Movement & Combat parameters
-@export var base_speed: float = 220.0
-@export var speed: float = 220.0
+@export var base_speed: float = 210.0
+@export var speed: float = 210.0
 @export var sndala_scene: PackedScene
 @export var contact_damage_interval: float = 0.35
-@export var knockback_force: float = 180.0
+@export var knockback_force: float = 200.0
 
 # Wake-up and Health settings
 @export var max_wake_up: float = 100.0
-@export var max_hp: float = 100.0
+@export var max_hp: float = 110.0
 var current_xp: int = 0
 var current_wake_up: float = 0.0
-var current_hp: float = 100.0
+var current_hp: float = 110.0
 var level: int = 1
 var xp_to_next_level: int = 10
 var level_up_bonus: int = 5
@@ -33,6 +33,9 @@ var damage_bonus: float = 1.0
 var speed_multiplier: float = 1.0
 var shoot_cooldown: float = 0.2
 var triple_shot: bool = false
+var crit_chance: float = 0.0
+var crit_damage_multiplier: float = 2.0
+var heal_on_kill: float = 0.0
 
 # Camera Shake Settings
 @export var max_shake_offset: float = 8.0
@@ -122,6 +125,20 @@ func handle_movement() -> void:
     sprite.flip_h = false
 
   move_and_slide()
+  _clamp_to_camera_bounds()
+
+func _clamp_to_camera_bounds() -> void:
+  var camera = get_viewport().get_camera_2d()
+  if camera == null:
+    return
+
+  var viewport_size = get_viewport_rect().size
+  var zoom = max(camera.zoom.x, 0.001)
+  var half_size = (viewport_size / zoom) * 0.5
+  var min_bound = camera.global_position - half_size
+  var max_bound = camera.global_position + half_size
+
+  global_position = global_position.clamp(min_bound, max_bound)
 
 func handle_aim() -> void:
   if shoot_pivot:
@@ -146,6 +163,9 @@ func _spawn_sndala(angle_offset: float) -> void:
   var sndala = sndala_scene.instantiate()
   if "damage" in sndala:
     sndala.damage *= damage_bonus
+    if randf() < crit_chance:
+      sndala.damage *= crit_damage_multiplier
+      add_trauma(0.12)
   sndala.global_position = spawn_point.global_position
   sndala.rotation = shoot_pivot.global_rotation + angle_offset
   get_tree().current_scene.add_child(sndala)
@@ -284,6 +304,16 @@ func apply_cooldown_modifier(reduction: float) -> void:
 
 func apply_triple_shot() -> void:
   triple_shot = true
+
+func apply_crit_chance(amount: float) -> void:
+  crit_chance = clamp(crit_chance + amount, 0.0, 0.5)
+
+func apply_heal_on_kill(amount: float) -> void:
+  heal_on_kill += amount
+
+func on_enemy_defeated(_enemy: Node) -> void:
+  if heal_on_kill > 0.0:
+    heal(heal_on_kill)
 
 func apply_max_health_modifier(extra_hp: float) -> void:
   max_hp += extra_hp

@@ -17,6 +17,8 @@ static func get_random_modifiers(count: int = 3, elapsed_time: float = 0.0) -> A
 		_load_modifier("res://scripts/modifiers/max_health_modifier.gd"),
 		_load_modifier("res://scripts/modifiers/damage_modifier.gd"),
 		_load_modifier("res://scripts/modifiers/cooldown_reduction_modifier.gd"),
+		_load_modifier("res://scripts/modifiers/crit_chance_modifier.gd"),
+		_load_modifier("res://scripts/modifiers/heal_on_kill_modifier.gd"),
 	]
 
 	# Unlock triple shot after 60 seconds

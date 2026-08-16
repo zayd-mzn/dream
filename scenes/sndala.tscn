@@ -1,19 +1,20 @@
 [gd_scene format=3 uid="uid://cbioha31mxv6l"]
 
 [ext_resource type="Script" uid="uid://d2ng70eeqf560" path="res://scripts/sndala.gd" id="1_2hd4m"]
-[ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="2_6jjjj"]
+[ext_resource type="Texture2D" uid="uid://cj5yyt442j38" path="res://assets/sandal.png" id="2_2hd4m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_551lq"]
-size = Vector2(126, 125)
+size = Vector2(56, 49.5)
 
 [node name="Sndala" type="Area2D" unique_id=134151983]
 script = ExtResource("1_2hd4m")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1651707572]
-texture = ExtResource("2_6jjjj")
+texture_filter = 1
+scale = Vector2(5, 5)
+texture = ExtResource("2_2hd4m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=375727326]
-position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_551lq")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1558784653]

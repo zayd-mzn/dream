@@ -4,9 +4,9 @@ extends CharacterBody2D
 signal died(enemy: Enemy)
 signal damaged(enemy: Enemy, damage_amount: float)
 
-@export var max_health: float = 100.0
+@export var max_health: float = 120.0
 @export var move_speed: float = 100.0
-@export var contact_damage: float = 10.0
+@export var contact_damage: float = 12.0
 @export var xp_value: int = 10
 @export var xp_orb_scene: PackedScene = preload("res://scenes/xp_orb.tscn")
 
@@ -53,6 +53,11 @@ func _on_hitbox_body_entered(body: Node) -> void:
 func die() -> void:
   if xp_orb_scene:
     call_deferred("_spawn_xp_orb")
+
+  for player_node: Node in get_tree().get_nodes_in_group("Player"):
+    if player_node.has_method("on_enemy_defeated"):
+      player_node.on_enemy_defeated(self)
+
   died.emit(self)
   queue_free()
 

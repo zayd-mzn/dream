@@ -10,7 +10,7 @@ const MODIFIER_FACTORY = preload("res://scripts/modifiers/modifier_factory.gd")
 @onready var music_player: AudioStreamPlayer = $MusicPlayer
 
 var elapsed_time: float = 0.0
-var spawn_interval: float = 2.5
+var spawn_interval: float = 2.1
 var spawn_timer: Timer
 var shoot_cooldown_duration: float = 0.2
 var shoot_cooldown_elapsed: float = 0.5
@@ -170,8 +170,8 @@ func _process(delta: float) -> void:
     if shoot_label:
       shoot_label.modulate.a = fill
 
-  var difficulty_scale: float = min(0.9, elapsed_time * 0.03)
-  var next_spawn_delay: float = max(0.5, spawn_interval - difficulty_scale)
+  var difficulty_scale: float = min(1.2, elapsed_time * 0.05)
+  var next_spawn_delay: float = max(0.65, spawn_interval - difficulty_scale)
   if spawn_timer and not is_equal_approx(spawn_timer.wait_time, next_spawn_delay):
     spawn_timer.wait_time = next_spawn_delay
 
