@@ -19,8 +19,7 @@ var shoot_cooldown_duration: float = 0.2
 var shoot_cooldown_elapsed: float = 0.5
 var enemy_scenes: Array[PackedScene] = [
 	preload("res://scenes/enemies/cockroach_normal.tscn"),
-	preload("res://scenes/enemies/cockroach_fast.tscn"),
-	preload("res://scenes/enemies/cockroach_big.tscn")
+	preload("res://scenes/enemies/cockroach_fast.tscn")
 ]
 var rare_enemy_scenes: Array[PackedScene] = [
 	preload("res://scenes/enemies/jinn.tscn")

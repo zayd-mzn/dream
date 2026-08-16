@@ -38,6 +38,7 @@ size = Vector2(110, 110)
 
 [node name="cockroach_normal" type="CharacterBody2D" unique_id=1252364376]
 script = ExtResource("1_q5o5c")
+max_health = 100.0
 xp_value = 1
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1159040278]
