@@ -75,7 +75,7 @@ sndala_scene = ExtResource("2_dqkch")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1953448278]
 texture_filter = 1
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_g4v7s")
 animation = &"idle"
 
@@ -98,9 +98,9 @@ one_shot = true
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1325513931]
 texture_filter = 1
-offset_left = -69.0
+offset_left = -47.0
 offset_top = -96.0
-offset_right = 71.0
+offset_right = 48.0
 offset_bottom = -82.0
 theme_override_font_sizes/font_size = 48
 theme_override_styles/background = SubResource("StyleBoxTexture_2hd4m")

@@ -136,12 +136,14 @@ func _clamp_to_camera_bounds() -> void:
 		return
 
 	var viewport_size = get_viewport_rect().size
-	var zoom = max(cam.zoom.x, 0.001)
-	var half_size = (viewport_size / zoom) * 0.5
-	var min_bound = cam.global_position - half_size
-	var max_bound = cam.global_position + half_size
+	var half_w = (viewport_size.x / max(cam.zoom.x, 0.001)) * 0.5
+	var half_h = (viewport_size.y / max(cam.zoom.y, 0.001)) * 0.5
 
-	global_position = global_position.clamp(min_bound, max_bound)
+	var min_bound = Vector2(cam.global_position.x - half_w + 60, cam.global_position.y - half_h + 250)
+	var max_bound = Vector2(cam.global_position.x + half_w - 60, cam.global_position.y + half_h)
+
+	global_position.x = clamp(global_position.x, min_bound.x, max_bound.x)
+	global_position.y = clamp(global_position.y, min_bound.y, max_bound.y)
 
 func handle_aim() -> void:
 	if shoot_pivot:

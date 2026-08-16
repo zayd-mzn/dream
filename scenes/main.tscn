@@ -16,6 +16,12 @@
 [ext_resource type="Texture2D" uid="uid://barqjhqfyop17" path="res://assets/background/Window light.PNG" id="13_yc10j"]
 [ext_resource type="Texture2D" uid="uid://rye30lk8rhfv" path="res://assets/background/Window.PNG" id="14_jscy8"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
+size = Vector2(66.01248, 37.61421)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yf5fn"]
+size = Vector2(25.75609, 40.704224)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fjrip"]
 texture = ExtResource("8_85g3d")
 region_rect = Rect2(328.999, 245.03119, 117.970276, 8.9678955)
@@ -36,8 +42,16 @@ scale = Vector2(2, 2)
 texture = ExtResource("7_t5g2k")
 
 [node name="Bath" type="Sprite2D" parent="Camera2D" unique_id=1546695115]
-position = Vector2(-440, -198)
+position = Vector2(-510.99997, -177)
+scale = Vector2(1.9390244, 1.7280701)
 texture = ExtResource("6_a8y0u")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Camera2D/Bath" unique_id=1763022183]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/Bath/StaticBody2D" unique_id=1651251859]
+position = Vector2(-3.0517578e-05, -3.7614212)
+scale = Vector2(1.0000007, 1)
+shape = SubResource("RectangleShape2D_g4v7s")
 
 [node name="Bell" type="Sprite2D" parent="Camera2D" unique_id=1336187396]
 position = Vector2(-229, -384)
@@ -76,8 +90,15 @@ position = Vector2(244, -334)
 texture = ExtResource("14_jscy8")
 
 [node name="Toilet" type="Sprite2D" parent="Camera2D" unique_id=180296025]
-position = Vector2(593, 133)
+position = Vector2(568, 96)
+scale = Vector2(2.5625, 2.0882354)
 texture = ExtResource("12_jkv2x")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Camera2D/Toilet" unique_id=1210066376]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/Toilet/StaticBody2D" unique_id=86705988]
+position = Vector2(1.1707306, -3.591549)
+shape = SubResource("RectangleShape2D_yf5fn")
 
 [node name="Player" parent="." unique_id=1996761387 instance=ExtResource("1_o5qli")]
 position = Vector2(-2, 13)

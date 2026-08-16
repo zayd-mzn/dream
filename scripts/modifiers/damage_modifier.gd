@@ -2,7 +2,7 @@ class_name DamageModifier
 extends RefCounted
 
 var id: String = "damage"
-var title: String = "ضربات مُشحَّذة"
+var title: String = "ضربات قوية"
 var description: String = "+20% ضرر"
 
 func apply(player: Node) -> void:

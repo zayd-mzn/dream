@@ -13,7 +13,7 @@ const MODIFIER_FACTORY = preload("res://scripts/modifiers/modifier_factory.gd")
 var special_label: Label
 
 var elapsed_time: float = 0.0
-var spawn_interval: float = 2.8
+var spawn_interval: float = 2.2
 var spawn_timer: Timer
 var shoot_cooldown_duration: float = 0.2
 var shoot_cooldown_elapsed: float = 0.5
@@ -72,6 +72,13 @@ func _ready() -> void:
 
 	_build_special_label()
 
+	# Periodic cleanup timer
+	var cleanup_timer = Timer.new()
+	cleanup_timer.wait_time = 5.0
+	cleanup_timer.autostart = true
+	cleanup_timer.timeout.connect(_cleanup_stray_nodes)
+	add_child(cleanup_timer)
+
 func _build_modifier_menu() -> void:
 	if not is_instance_valid(get_node_or_null("UI")):
 		return
@@ -103,7 +110,7 @@ func _build_modifier_menu() -> void:
 	modifier_menu.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "اختر تعديلاً"
+	title.text = "اختر تعديلا"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 48)
 	vbox.add_child(title)
@@ -174,8 +181,8 @@ func _process(delta: float) -> void:
 		if shoot_label:
 			shoot_label.modulate.a = fill
 
-	var difficulty_scale: float = min(1.8, elapsed_time * 0.03)
-	var next_spawn_delay: float = max(0.9, spawn_interval - difficulty_scale)
+	var difficulty_scale: float = min(1.8, elapsed_time * 0.035)
+	var next_spawn_delay: float = max(0.75, spawn_interval - difficulty_scale)
 	if spawn_timer and not is_equal_approx(spawn_timer.wait_time, next_spawn_delay):
 		spawn_timer.wait_time = next_spawn_delay
 
@@ -194,6 +201,11 @@ func _on_spawn_timer_timeout() -> void:
 
 func _spawn_enemy() -> void:
 	if not player or get_tree().paused:
+		return
+
+	# Cap total enemies to avoid lag
+	var current_enemies = get_tree().get_nodes_in_group("enemies")
+	if current_enemies.size() >= 40:
 		return
 
 	var enemy_scene: PackedScene = _choose_enemy_scene()
@@ -228,28 +240,31 @@ func _get_spawn_position() -> Vector2:
 	if active_camera:
 		zoom = active_camera.zoom
 
-	var world_view_size: Vector2 = Vector2(
-		viewport_size.x / max(zoom.x, 0.001),
-		viewport_size.y / max(zoom.y, 0.001)
-	)
-	var player_pos: Vector2 = player.global_position
-	var margin: float = 100.0
+	var half_w: float = (viewport_size.x / max(zoom.x, 0.001)) * 0.5
+	var half_h: float = (viewport_size.y / max(zoom.y, 0.001)) * 0.5
+	var cam_pos: Vector2 = active_camera.global_position if active_camera else Vector2.ZERO
+
+	var min_x: float = cam_pos.x - half_w + 60
+	var max_x: float = cam_pos.x + half_w - 60
+	var min_y: float = cam_pos.y - half_h + 250
+	var max_y: float = cam_pos.y + half_h
+
 	var side: int = randi() % 4
-	var spawn_pos: Vector2 = player_pos
+	var spawn_pos: Vector2 = Vector2.ZERO
 
 	match side:
-		0:
-			spawn_pos.x = player_pos.x - world_view_size.x * 0.7 - margin
-			spawn_pos.y = randf_range(player_pos.y - world_view_size.y * 0.7, player_pos.y + world_view_size.y * 0.7)
-		1:
-			spawn_pos.x = player_pos.x + world_view_size.x * 0.7 + margin
-			spawn_pos.y = randf_range(player_pos.y - world_view_size.y * 0.7, player_pos.y + world_view_size.y * 0.7)
-		2:
-			spawn_pos.x = randf_range(player_pos.x - world_view_size.x * 0.7, player_pos.x + world_view_size.x * 0.7)
-			spawn_pos.y = player_pos.y - world_view_size.y * 0.7 - margin
-		3:
-			spawn_pos.x = randf_range(player_pos.x - world_view_size.x * 0.7, player_pos.x + world_view_size.x * 0.7)
-			spawn_pos.y = player_pos.y + world_view_size.y * 0.7 + margin
+		0: # left
+			spawn_pos.x = min_x
+			spawn_pos.y = randf_range(min_y, max_y)
+		1: # right
+			spawn_pos.x = max_x
+			spawn_pos.y = randf_range(min_y, max_y)
+		2: # top
+			spawn_pos.x = randf_range(min_x, max_x)
+			spawn_pos.y = min_y
+		3: # bottom
+			spawn_pos.x = randf_range(min_x, max_x)
+			spawn_pos.y = max_y
 
 	return spawn_pos
 
@@ -326,7 +341,7 @@ func _build_game_over_overlay() -> void:
 	panel.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "لقد مُتَّ"
+	title.text = "لقد مت"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 32)
 	vbox.add_child(title)
@@ -346,7 +361,7 @@ func _build_special_label() -> void:
 	if not is_instance_valid(get_node_or_null("UI/Control")):
 		return
 	special_label = Label.new()
-	special_label.text = "✦ جاهز"
+	special_label.text = "جاهز"
 	special_label.add_theme_font_size_override("font_size", 28)
 	special_label.modulate = Color(1.0, 0.85, 0.2, 0.0)
 	special_label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
@@ -363,12 +378,31 @@ func _on_special_charges_changed(charges: int) -> void:
 	if not special_label:
 		return
 	if charges > 0:
-		special_label.text = "✦ جاهز"
+		special_label.text = "جاهز"
 		var tween = create_tween()
 		tween.tween_property(special_label, "modulate:a", 1.0, 0.2)
 	else:
 		var tween = create_tween()
 		tween.tween_property(special_label, "modulate:a", 0.0, 0.3)
+
+func _cleanup_stray_nodes() -> void:
+	if not player:
+		return
+	var viewport_size = get_viewport().get_visible_rect().size
+	var cam = get_viewport().get_camera_2d()
+	var zoom = cam.zoom if cam else Vector2.ONE
+	var half_w = (viewport_size.x / max(zoom.x, 0.001)) * 0.5
+	var half_h = (viewport_size.y / max(zoom.y, 0.001)) * 0.5
+	var cam_pos = cam.global_position if cam else Vector2.ZERO
+	var cull_margin = 300.0
+
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if not is_instance_valid(enemy):
+			continue
+		var pos = enemy.global_position
+		if pos.x < cam_pos.x - half_w - cull_margin or pos.x > cam_pos.x + half_w + cull_margin \
+		or pos.y < cam_pos.y - half_h - cull_margin or pos.y > cam_pos.y + half_h + cull_margin:
+			enemy.queue_free()
 
 func _on_music_finished() -> void:
 	if music_player:

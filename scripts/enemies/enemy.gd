@@ -23,16 +23,6 @@ func _ready() -> void:
 		hitbox.area_entered.connect(_on_hitbox_area_entered)
 		hitbox.body_entered.connect(_on_hitbox_body_entered)
 
-	for other_enemy: Node in get_tree().get_nodes_in_group("enemies"):
-		if other_enemy != self and other_enemy is PhysicsBody2D:
-			add_collision_exception_with(other_enemy)
-			other_enemy.add_collision_exception_with(self)
-
-	for player_node: Node in get_tree().get_nodes_in_group("Player"):
-		if player_node is PhysicsBody2D:
-			add_collision_exception_with(player_node)
-			player_node.add_collision_exception_with(self)
-
 func take_damage(damage_amount: float) -> void:
 	health -= damage_amount
 	if get_tree().current_scene and get_tree().current_scene.has_method("show_damage_number"):

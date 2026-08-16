@@ -100,7 +100,7 @@ xp_value = 4
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1584516613]
 texture_filter = 1
-scale = Vector2(4.5, 4.5)
+scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_e5e46")
 animation = &"walk"
 frame = 5

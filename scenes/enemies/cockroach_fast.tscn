@@ -34,7 +34,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e46"]
-size = Vector2(110, 110)
+size = Vector2(70, 64)
 
 [node name="cockroach_fast" type="CharacterBody2D" unique_id=1252364376]
 script = ExtResource("1_62ty7")
@@ -45,7 +45,7 @@ xp_value = 2
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1191520809]
 modulate = Color(1, 1, 0, 1)
 texture_filter = 1
-scale = Vector2(5, 5)
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_e5e46")
 frame_progress = 0.4820032
 
@@ -57,5 +57,6 @@ shape = SubResource("RectangleShape2D_e5e46")
 script = ExtResource("2_5y1xv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=815203792]
+position = Vector2(-0.5, -1)
 scale = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_e5e46")

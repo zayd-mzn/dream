@@ -27,7 +27,3 @@ func _physics_process(_delta: float) -> void:
 
 	if sprite and absf(velocity.x) > 0.01:
 		sprite.flip_h = velocity.x > 0.0
-
-	if target is PhysicsBody2D:
-		add_collision_exception_with(target)
-		target.add_collision_exception_with(self)
