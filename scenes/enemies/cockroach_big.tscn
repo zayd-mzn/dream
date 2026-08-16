@@ -6,15 +6,15 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yiv8g"]
 atlas = ExtResource("3_gar2w")
-region = Rect2(0, 0, 764, 488)
+region = Rect2(0, 0, 11, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ev27m"]
 atlas = ExtResource("3_gar2w")
-region = Rect2(764, 0, 764, 488)
+region = Rect2(11, 0, 11, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_87ipr"]
 atlas = ExtResource("3_gar2w")
-region = Rect2(1528, 0, 764, 488)
+region = Rect2(22, 0, 11, 10)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e5e46"]
 animations = [{
@@ -30,7 +30,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e46"]
@@ -44,8 +44,7 @@ xp_value = 5
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=481254341]
 modulate = Color(1, 0, 0, 1)
 texture_filter = 1
-position = Vector2(1131, 1829.0001)
-scale = Vector2(15, 15)
+scale = Vector2(20, 20)
 sprite_frames = SubResource("SpriteFrames_e5e46")
 frame_progress = 0.47898725
 

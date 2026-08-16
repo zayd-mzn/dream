@@ -2,6 +2,12 @@ class_name Cockroach
 extends Enemy
 
 @export var target: Node2D
+@onready var sprite: AnimatedSprite2D = get_node_or_null("Sprite2D")
+
+func _ready() -> void:
+  super._ready()
+  if sprite:
+    sprite.play("default")
 
 func _physics_process(_delta: float) -> void:
   if target == null:
@@ -18,6 +24,9 @@ func _physics_process(_delta: float) -> void:
 
   velocity = direction * move_speed
   move_and_slide()
+
+  if sprite and absf(velocity.x) > 0.01:
+    sprite.flip_h = velocity.x > 0.0
 
   if target is PhysicsBody2D:
     add_collision_exception_with(target)
