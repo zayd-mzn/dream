@@ -53,269 +53,269 @@ var trauma_decay: float = 1.8
 @onready var hurtbox: Area2D = get_node_or_null("Hurtbox")
 
 func _ready() -> void:
-  add_to_group("Player")
+	add_to_group("Player")
 
-  if hurtbox == null:
-    hurtbox = get_node_or_null("HitBox")
-  if invuln_timer == null:
-    invuln_timer = Timer.new()
-    invuln_timer.name = "InvincibilityTimer"
-    invuln_timer.one_shot = true
-    add_child(invuln_timer)
-    if not invuln_timer.timeout.is_connected(_on_invincibility_timeout):
-      invuln_timer.timeout.connect(_on_invincibility_timeout)
+	if hurtbox == null:
+		hurtbox = get_node_or_null("HitBox")
+	if invuln_timer == null:
+		invuln_timer = Timer.new()
+		invuln_timer.name = "InvincibilityTimer"
+		invuln_timer.one_shot = true
+		add_child(invuln_timer)
+		if not invuln_timer.timeout.is_connected(_on_invincibility_timeout):
+			invuln_timer.timeout.connect(_on_invincibility_timeout)
 
-  # Initialize stats
-  current_hp = max_hp
-  current_wake_up = 0.0
-  xp_to_next_level = get_xp_threshold_for_level(level)
-  if health_bar:
-    health_bar.max_value = max_hp
-    health_bar.value = current_hp
-  health_changed.emit(current_hp, max_hp)
-  wake_up_changed.emit(current_wake_up, max_wake_up)
+	# Initialize stats
+	current_hp = max_hp
+	current_wake_up = 0.0
+	xp_to_next_level = get_xp_threshold_for_level(level)
+	if health_bar:
+		health_bar.max_value = max_hp
+		health_bar.value = current_hp
+	health_changed.emit(current_hp, max_hp)
+	wake_up_changed.emit(current_wake_up, max_wake_up)
 
-  if camera:
-    camera.ignore_rotation = true
+	if camera:
+		camera.ignore_rotation = true
 
-  if hurtbox:
-    if not hurtbox.area_entered.is_connected(_on_hurtbox_area_entered):
-      hurtbox.area_entered.connect(_on_hurtbox_area_entered)
-    hurtbox.set_deferred("monitoring", true)
-    hurtbox.set_deferred("monitorable", true)
+	if hurtbox:
+		if not hurtbox.area_entered.is_connected(_on_hurtbox_area_entered):
+			hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+		hurtbox.set_deferred("monitoring", true)
+		hurtbox.set_deferred("monitorable", true)
 
 func _physics_process(delta: float) -> void:
-  if is_dead:
-    return
+	if is_dead:
+		return
 
-  handle_movement()
-  handle_aim()
-  handle_contact_damage()
-  handle_camera_shake(delta)
+	handle_movement()
+	handle_aim()
+	handle_contact_damage()
+	handle_camera_shake(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
-  if is_dead:
-    return
+	if is_dead:
+		return
 
-  if event.is_action_pressed("shoot") and shoot_timer.is_stopped():
-    shoot_sndala()
-    shoot_timer.start(shoot_cooldown)
-  if event.is_action_pressed("special") and special_timer and special_timer.is_stopped():
-    use_special_ability()
-    special_timer.start()
+	if event.is_action_pressed("shoot") and shoot_timer.is_stopped():
+		shoot_sndala()
+		shoot_timer.start(shoot_cooldown)
+
+	if event.is_action_pressed("special") and special_timer and special_timer.is_stopped():
+		use_special_ability()
+		special_timer.start()
 
 # --- Movement & Aim ---
 func handle_movement() -> void:
-  var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-  velocity = input_dir * speed
-  
-  if velocity.length() > 0.01:
-    velocity = velocity.normalized() * speed
-    $AnimatedSprite2D.play("walk")
-  else:
-    velocity = Vector2.ZERO
-    $AnimatedSprite2D.play("idle")
-  
-  if velocity.x > 0.0:
-    sprite.flip_h = true
-  elif velocity.x < 0.0:
-    sprite.flip_h = false
-  
-  move_and_slide()
+	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+
+	if input_dir.length() > 0.01:
+		velocity = input_dir.normalized() * speed
+		$AnimatedSprite2D.play("walk")
+	else:
+		velocity = Vector2.ZERO
+		$AnimatedSprite2D.play("idle")
+
+	if velocity.x > 0.0:
+		sprite.flip_h = true
+	elif velocity.x < 0.0:
+		sprite.flip_h = false
+
+	move_and_slide()
 
 func handle_aim() -> void:
-  if shoot_pivot:
-    shoot_pivot.look_at(get_global_mouse_position())
+	if shoot_pivot:
+		shoot_pivot.look_at(get_global_mouse_position())
 
 # --- Sandal Combat Actions ---
 func shoot_sndala() -> void:
-  if not sndala_scene:
-    push_warning("Sndala Scene is not assigned in the Player Inspector!")
-    return
+	if not sndala_scene:
+		push_warning("Sndala Scene is not assigned in the Player Inspector!")
+		return
 
-  add_trauma(0.1)
-  shot_fired.emit()
+	add_trauma(0.1)
+	shot_fired.emit()
 
-  if triple_shot:
-    for angle_offset in [-15.0, 0.0, 15.0]:
-      _spawn_sndala(deg_to_rad(angle_offset))
-  else:
-    _spawn_sndala(0.0)
+	if triple_shot:
+		for angle_offset in [-15.0, 0.0, 15.0]:
+			_spawn_sndala(deg_to_rad(angle_offset))
+	else:
+		_spawn_sndala(0.0)
 
 func _spawn_sndala(angle_offset: float) -> void:
-  var sndala = sndala_scene.instantiate()
-  if "damage" in sndala:
-    sndala.damage *= damage_bonus
-  sndala.global_position = spawn_point.global_position
-  sndala.rotation = shoot_pivot.global_rotation + angle_offset
-  get_tree().current_scene.add_child(sndala)
+	var sndala = sndala_scene.instantiate()
+	if "damage" in sndala:
+		sndala.damage *= damage_bonus
+	sndala.global_position = spawn_point.global_position
+	sndala.rotation = shoot_pivot.global_rotation + angle_offset
+	get_tree().current_scene.add_child(sndala)
 
 func use_special_ability() -> void:
-  add_trauma(0.7)
-  print("Lucid shockwave used!")
+	add_trauma(0.7)
+	print("Lucid shockwave used!")
 
 # --- Damage, Health & Death ---
 func take_damage(amount: float = 15.0, source_position: Vector2 = Vector2.ZERO) -> void:
-  if is_invulnerable or is_dead:
-    return
+	if is_invulnerable or is_dead:
+		return
 
-  if get_tree().current_scene and get_tree().current_scene.has_method("show_damage_number"):
-    get_tree().current_scene.show_damage_number(global_position, amount, Color(1.0, 0.35, 0.35, 1.0))
+	if get_tree().current_scene and get_tree().current_scene.has_method("show_damage_number"):
+		get_tree().current_scene.show_damage_number(global_position, amount, Color(1.0, 0.35, 0.35, 1.0))
 
-  current_hp = max(0.0, current_hp - amount)
-  update_health_ui()
-  health_changed.emit(current_hp, max_hp)
+	current_hp = max(0.0, current_hp - amount)
+	update_health_ui()
+	health_changed.emit(current_hp, max_hp)
 
-  if source_position != Vector2.ZERO:
-    var knockback_dir: Vector2 = (global_position - source_position).normalized()
-    velocity += knockback_dir * knockback_force
+	if source_position != Vector2.ZERO:
+		var knockback_dir: Vector2 = (global_position - source_position).normalized()
+		velocity += knockback_dir * knockback_force
 
-  add_trauma(0.4)
-  start_invulnerability(1.0)
+	add_trauma(0.4)
+	start_invulnerability(1.0)
 
-  if current_hp <= 0.0:
-    die()
+	if current_hp <= 0.0:
+		die()
 
 func heal(amount: float = 15.0) -> void:
-  if is_dead:
-    return
-  current_hp = min(max_hp, current_hp + amount)
-  update_health_ui()
-  health_changed.emit(current_hp, max_hp)
+	if is_dead:
+		return
+	current_hp = min(max_hp, current_hp + amount)
+	update_health_ui()
+	health_changed.emit(current_hp, max_hp)
 
 func update_health_ui() -> void:
-  if health_bar:
-    var tween = create_tween()
-    tween.tween_property(health_bar, "value", current_hp, 0.15)
+	if health_bar:
+		var tween = create_tween()
+		tween.tween_property(health_bar, "value", current_hp, 0.15)
 
 func start_invulnerability(duration: float = 1.0) -> void:
-  is_invulnerable = true
-  if invuln_timer:
-    invuln_timer.start(duration)
+	is_invulnerable = true
+	if invuln_timer:
+		invuln_timer.start(duration)
 
-  if sprite:
-    var tween = create_tween().set_loops(int(duration / 0.1))
-    tween.tween_property(sprite, "modulate:a", 0.3, 0.05)
-    tween.tween_property(sprite, "modulate:a", 1.0, 0.05)
+	if sprite:
+		var tween = create_tween().set_loops(int(duration / 0.1))
+		tween.tween_property(sprite, "modulate:a", 0.3, 0.05)
+		tween.tween_property(sprite, "modulate:a", 1.0, 0.05)
 
 func _on_invincibility_timeout() -> void:
-  is_invulnerable = false
-  if sprite:
-    sprite.modulate.a = 1.0
+	is_invulnerable = false
+	if sprite:
+		sprite.modulate.a = 1.0
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
-  if area.is_in_group("enemy_hitbox") and not is_invulnerable and not is_dead:
-    var dmg: float = 15.0
-    if "damage" in area:
-      dmg = area.damage
-    take_damage(dmg, area.global_position)
+	if area.is_in_group("enemy_hitbox") and not is_invulnerable and not is_dead:
+		var dmg: float = 15.0
+		if "damage" in area:
+			dmg = area.damage
+		take_damage(dmg, area.global_position)
 
 func handle_contact_damage() -> void:
-  if not hurtbox or is_dead:
-    return
+	if not hurtbox or is_dead:
+		return
 
-  var now: float = Time.get_ticks_msec() / 1000.0
-  if now - last_contact_damage_time < contact_damage_interval:
-    return
+	var now: float = Time.get_ticks_msec() / 1000.0
+	if now - last_contact_damage_time < contact_damage_interval:
+		return
 
-  for body in hurtbox.get_overlapping_bodies():
-    if body.is_in_group("enemies") and not is_invulnerable:
-      last_contact_damage_time = now
-      take_damage(15.0, body.global_position)
-      return
+	for body in hurtbox.get_overlapping_bodies():
+		if body.is_in_group("enemies") and not is_invulnerable:
+			last_contact_damage_time = now
+			take_damage(15.0, body.global_position)
+			return
 
-  for area in hurtbox.get_overlapping_areas():
-    if area.is_in_group("enemy_hitbox") and not is_invulnerable:
-      var dmg: float = 15.0
-      if "damage" in area:
-        dmg = area.damage
-      last_contact_damage_time = now
-      take_damage(dmg, area.global_position)
-      return
+	for area in hurtbox.get_overlapping_areas():
+		if area.is_in_group("enemy_hitbox") and not is_invulnerable:
+			var dmg: float = 15.0
+			if "damage" in area:
+				dmg = area.damage
+			last_contact_damage_time = now
+			take_damage(dmg, area.global_position)
+			return
 
 func get_xp_threshold_for_level(level_number: int) -> int:
-  return int(10 + (level_number - 1) * 8)
+	return int(10 + (level_number - 1) * 8)
 
 func increase_wake_up(amount: float) -> void:
-  current_wake_up = min(max_wake_up, current_wake_up + amount)
-  wake_up_changed.emit(current_wake_up, max_wake_up)
+	current_wake_up = min(max_wake_up, current_wake_up + amount)
+	wake_up_changed.emit(current_wake_up, max_wake_up)
 
-  if current_wake_up >= max_wake_up:
-    trigger_wake_up()
+	if current_wake_up >= max_wake_up:
+		trigger_wake_up()
 
 func collect_xp(amount: int) -> void:
-  current_xp += amount
-  while current_xp >= xp_to_next_level:
-    current_xp -= xp_to_next_level
-    level += 1
-    xp_to_next_level = get_xp_threshold_for_level(level)
-    trigger_level_up()
-  update_xp_bar()
-  xp_changed.emit(current_xp)
+	current_xp += amount
+	while current_xp >= xp_to_next_level:
+		current_xp -= xp_to_next_level
+		level += 1
+		xp_to_next_level = get_xp_threshold_for_level(level)
+		trigger_level_up()
+	update_xp_bar()
+	xp_changed.emit(current_xp)
 
 func update_xp_bar() -> void:
-  if not is_inside_tree():
-    return
-  var bar = get_tree().current_scene.get_node_or_null("UI/Control/XpBar")
-  if bar:
-    bar.max_value = xp_to_next_level
-    bar.value = current_xp
-    var tween = create_tween()
-    tween.tween_property(bar, "value", current_xp, 0.12)
+	if not is_inside_tree():
+		return
+	var bar = get_tree().current_scene.get_node_or_null("UI/Control/XpBar")
+	if bar:
+		bar.max_value = xp_to_next_level
+		bar.value = current_xp
+		var tween = create_tween()
+		tween.tween_property(bar, "value", current_xp, 0.12)
 
 func trigger_level_up() -> void:
-  player_woke_up.emit()
-  if get_tree().current_scene and get_tree().current_scene.has_method("open_modifier_menu"):
-    get_tree().current_scene.request_modifier_menu()
+	player_woke_up.emit()
+	if get_tree().current_scene and get_tree().current_scene.has_method("request_modifier_menu"):
+		get_tree().current_scene.request_modifier_menu()
 
 func trigger_wake_up() -> void:
-  player_woke_up.emit()
-  print("Wake Up complete!")
+	player_woke_up.emit()
+	print("Wake Up complete!")
 
 func apply_speed_modifier(multiplier: float) -> void:
-  speed_multiplier *= multiplier
-  speed = base_speed * speed_multiplier
+	speed_multiplier *= multiplier
+	speed = base_speed * speed_multiplier
 
 func apply_damage_modifier(multiplier: float) -> void:
-  damage_bonus *= multiplier
+	damage_bonus *= multiplier
 
 func apply_cooldown_modifier(reduction: float) -> void:
-  shoot_cooldown = max(0.05, shoot_cooldown + reduction)
+	shoot_cooldown = max(0.05, shoot_cooldown + reduction)
 
 func apply_triple_shot() -> void:
-  triple_shot = true
+	triple_shot = true
 
 func apply_max_health_modifier(extra_hp: float) -> void:
-  max_hp += extra_hp
-  current_hp = min(max_hp, current_hp + extra_hp)
-  if health_bar:
-    health_bar.max_value = max_hp
-    health_bar.value = current_hp
-  health_changed.emit(current_hp, max_hp)
+	max_hp += extra_hp
+	current_hp = min(max_hp, current_hp + extra_hp)
+	if health_bar:
+		health_bar.max_value = max_hp
+		health_bar.value = current_hp
+	health_changed.emit(current_hp, max_hp)
 
 func die() -> void:
-  is_dead = true
-  velocity = Vector2.ZERO
-  add_trauma(1.0)
-  player_died.emit()
-  set_physics_process(false)
-  set_process_unhandled_input(false)
-  print("Game Over: Player Died!")
+	is_dead = true
+	velocity = Vector2.ZERO
+	add_trauma(1.0)
+	player_died.emit()
+	set_physics_process(false)
+	set_process_unhandled_input(false)
+	print("Game Over: Player Died!")
 
 # --- Camera Shake System ---
 func add_trauma(amount: float) -> void:
-  trauma = clamp(trauma + amount, 0.0, 1.0)
+	trauma = clamp(trauma + amount, 0.0, 1.0)
 
 func handle_camera_shake(delta: float) -> void:
-  if not camera:
-    return
+	if not camera:
+		return
 
-  if trauma > 0.0:
-    var shake_amount: float = trauma * trauma
-    camera.offset = Vector2(
-      randf_range(-max_shake_offset, max_shake_offset) * shake_amount,
-      randf_range(-max_shake_offset, max_shake_offset) * shake_amount
-    )
-    trauma = max(0.0, trauma - trauma_decay * delta)
-  else:
-    camera.offset = Vector2.ZERO
+	if trauma > 0.0:
+		var shake_amount: float = trauma * trauma
+		camera.offset = Vector2(
+			randf_range(-max_shake_offset, max_shake_offset) * shake_amount,
+			randf_range(-max_shake_offset, max_shake_offset) * shake_amount
+		)
+		trauma = max(0.0, trauma - trauma_decay * delta)
+	else:
+		camera.offset = Vector2.ZERO

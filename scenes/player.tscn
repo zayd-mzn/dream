@@ -88,10 +88,10 @@ one_shot = true
 [node name="SndalaSpawnPoint" type="Marker2D" parent="ShootPivot" unique_id=905506221]
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1325513931]
-offset_left = -117.0
-offset_top = -341.0
-offset_right = 133.0
-offset_bottom = -307.0
+offset_left = -69.0
+offset_top = -96.0
+offset_right = 71.0
+offset_bottom = -82.0
 theme_override_font_sizes/font_size = 48
 value = 100.0
 fill_mode = 1
