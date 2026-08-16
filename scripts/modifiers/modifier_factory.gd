@@ -5,7 +5,7 @@ static var last_chosen_ids: Array[String] = []
 static var acquired_ids: Array[String] = []
 
 # IDs that can only be picked once ever
-static var one_time_ids: Array[String] = ["triple_shot"]
+static var one_time_ids: Array[String] = ["triple_shot", "piercing"]
 
 static func _load_modifier(script_path: String) -> RefCounted:
 	var script = load(script_path)
@@ -19,6 +19,7 @@ static func get_random_modifiers(count: int = 3, elapsed_time: float = 0.0) -> A
 		_load_modifier("res://scripts/modifiers/cooldown_reduction_modifier.gd"),
 		_load_modifier("res://scripts/modifiers/crit_chance_modifier.gd"),
 		_load_modifier("res://scripts/modifiers/heal_on_kill_modifier.gd"),
+		_load_modifier("res://scripts/modifiers/piercing_modifier.gd"),
 	]
 
 	# Unlock triple shot after 60 seconds

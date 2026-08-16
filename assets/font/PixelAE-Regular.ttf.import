@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b6bjgn17wta21"
-path="res://.godot/imported/TinyUnicode.ttf-faf70d2100b20d00e32b517a96589019.fontdata"
+uid="uid://c1t60mr5o3wtj"
+path="res://.godot/imported/PixelAE-Regular.ttf-cba9e16efb597a521e88e8899af4f76e.fontdata"
 
 [deps]
 
-source_file="res://assets/font/TinyUnicode.ttf"
-dest_files=["res://.godot/imported/TinyUnicode.ttf-faf70d2100b20d00e32b517a96589019.fontdata"]
+source_file="res://assets/font/PixelAE-Regular.ttf"
+dest_files=["res://.godot/imported/PixelAE-Regular.ttf-cba9e16efb597a521e88e8899af4f76e.fontdata"]
 
 [params]
 

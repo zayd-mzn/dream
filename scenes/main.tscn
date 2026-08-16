@@ -30,6 +30,7 @@ script = ExtResource("1_o6xl0")
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=700318547]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1653793651]
+current = true
 
 [node name="Background" type="Sprite2D" parent="Camera2D" unique_id=1575763302]
 scale = Vector2(2, 2)
@@ -127,7 +128,7 @@ offset_top = -45.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 32
-text = "Shoot"
+text = "إطلاق"
 
 [node name="ShootCooldown" type="ProgressBar" parent="UI/Control" unique_id=1395344196]
 layout_mode = 1
@@ -144,3 +145,27 @@ mouse_filter = 2
 max_value = 1.0
 value = 1.0
 show_percentage = false
+
+[node name="SpecialLabel" type="Label" parent="UI/Control" unique_id=2062845571]
+layout_mode = 0
+offset_left = 985.0
+offset_top = 598.0
+offset_right = 1145.0
+offset_bottom = 646.0
+theme_override_font_sizes/font_size = 32
+text = "قدرة خاصة "
+
+[node name="SpecialCooldown" type="ProgressBar" parent="UI/Control" unique_id=784115329]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 604.0
+offset_right = 976.0
+offset_bottom = 636.0
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control" unique_id=1793274494]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

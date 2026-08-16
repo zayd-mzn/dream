@@ -7,7 +7,10 @@ const MODIFIER_FACTORY = preload("res://scripts/modifiers/modifier_factory.gd")
 @onready var clock_label: Label = get_node_or_null("UI/Control/ClockLabel")
 @onready var shoot_bar: ProgressBar = get_node_or_null("UI/Control/ShootCooldown")
 @onready var shoot_label: Label = get_node_or_null("UI/Control/ShootLabel")
+@onready var special_bar: ProgressBar = get_node_or_null("UI/Control/SpecialCooldown")
 @onready var music_player: AudioStreamPlayer = $MusicPlayer
+
+var special_label: Label
 
 var elapsed_time: float = 0.0
 var spawn_interval: float = 2.1
@@ -49,6 +52,8 @@ func _ready() -> void:
       player.player_died.connect(_on_player_died)
     if player.has_signal("shot_fired"):
       player.shot_fired.connect(_on_player_shot_fired)
+    if player.has_signal("special_charges_changed"):
+      player.special_charges_changed.connect(_on_special_charges_changed)
 
     if xp_bar:
       xp_bar.max_value = player.xp_to_next_level
@@ -62,6 +67,11 @@ func _ready() -> void:
     shoot_bar.value = 1.0
   if shoot_label:
     shoot_label.modulate.a = 1.0
+  if special_bar:
+    special_bar.max_value = 1.0
+    special_bar.value = 0.0
+
+  _build_special_label()
 
 func _build_modifier_menu() -> void:
   if not is_instance_valid(get_node_or_null("UI")):
@@ -99,7 +109,7 @@ func _build_modifier_menu() -> void:
   panel.add_child(vbox)
 
   var title = Label.new()
-  title.text = "Choose a modifier"
+  title.text = "اختر تعديلاً"
   title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
   title.add_theme_font_size_override("font_size", 64)
   vbox.add_child(title)
@@ -108,7 +118,7 @@ func _build_modifier_menu() -> void:
     var button = Button.new()
     button.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
     button.focus_mode = Control.FOCUS_ALL
-    button.text = "Modifier"
+    button.text = "تعديل"
     button.custom_minimum_size = Vector2(0, 120)
     button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     button.add_theme_font_size_override("font_size", 48)
@@ -322,21 +332,49 @@ func _build_game_over_overlay() -> void:
   panel.add_child(vbox)
 
   var title = Label.new()
-  title.text = "You Died"
+  title.text = "لقد مُتَّ"
   title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
   title.add_theme_font_size_override("font_size", 32)
   vbox.add_child(title)
 
   var subtitle = Label.new()
-  subtitle.text = "The jinns took the night."
+  subtitle.text = "الجن أخذ الليل."
   subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
   vbox.add_child(subtitle)
 
   restart_button = Button.new()
-  restart_button.text = "Restart Run"
+  restart_button.text = "إعادة المحاولة"
   restart_button.custom_minimum_size = Vector2(180, 48)
   restart_button.pressed.connect(_restart_game)
   vbox.add_child(restart_button)
+
+func _build_special_label() -> void:
+  if not is_instance_valid(get_node_or_null("UI/Control")):
+    return
+  special_label = Label.new()
+  special_label.text = "✦ جاهز"
+  special_label.add_theme_font_size_override("font_size", 28)
+  special_label.modulate = Color(1.0, 0.85, 0.2, 0.0)
+  special_label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+  special_label.offset_left = 16.0
+  special_label.offset_bottom = -12.0
+  special_label.offset_right = 200.0
+  special_label.offset_top = -48.0
+  get_node("UI/Control").add_child(special_label)
+
+func _on_special_charges_changed(charges: int) -> void:
+  if special_bar:
+    var tween = create_tween()
+    tween.tween_property(special_bar, "value", float(charges), 0.25)
+  if not special_label:
+    return
+  if charges > 0:
+    special_label.text = "✦ جاهز"
+    var tween = create_tween()
+    tween.tween_property(special_label, "modulate:a", 1.0, 0.2)
+  else:
+    var tween = create_tween()
+    tween.tween_property(special_label, "modulate:a", 0.0, 0.3)
 
 func _on_music_finished() -> void:
   if music_player:

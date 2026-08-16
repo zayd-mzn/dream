@@ -2,8 +2,8 @@ class_name MaxHealthModifier
 extends RefCounted
 
 var id: String = "max_health"
-var title: String = "Vitality"
-var description: String = "+20 max health and heal 20"
+var title: String = "قوة الجسد"
+var description: String = "+20 صحة قصوى وشفاء 20"
 
 func apply(player: Node) -> void:
 	if player.has_method("apply_max_health_modifier"):
