@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://du7gvfsnvidq2"]
 
 [ext_resource type="Script" uid="uid://cwcwlc717dged" path="res://scripts/main_menu.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bp1mosk62ercx" path="res://assets/menu/Main menu BG.PNG" id="2_natt5"]
+[ext_resource type="Texture2D" uid="uid://c02epebgme7ur" path="res://assets/menu/Sndala UI.PNG" id="3_r3g3c"]
+[ext_resource type="Texture2D" uid="uid://2h3ickq3n6e5" path="res://assets/menu/board.png" id="4_3vvtq"]
 
 [node name="MainMenu" type="Control" unique_id=1244812156]
 layout_mode = 3
@@ -11,12 +14,43 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
+[node name="TextureRect" type="TextureRect" parent="." unique_id=504741960]
+layout_mode = 0
+offset_left = -207.0
+offset_top = -67.0
+offset_right = 1713.0
+offset_bottom = 1013.0
+texture = ExtResource("2_natt5")
+stretch_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=483029304]
+layout_mode = 0
+offset_left = 323.0
+offset_top = 779.0
+offset_right = 702.0
+offset_bottom = 970.0
+texture = ExtResource("3_r3g3c")
+
+[node name="TextureRect4" type="TextureRect" parent="." unique_id=1466459340]
+layout_mode = 0
+offset_right = 1538.0
+offset_bottom = 465.0
+texture = ExtResource("4_3vvtq")
+
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=1702071342]
+layout_mode = 0
+offset_left = 812.0
+offset_top = 776.0
+offset_right = 1191.0
+offset_bottom = 967.0
+texture = ExtResource("3_r3g3c")
+
 [node name="Start" type="Button" parent="." unique_id=1161554270]
 layout_mode = 0
-offset_left = 799.0
-offset_top = 405.0
-offset_right = 1059.0
-offset_bottom = 469.0
+offset_left = 813.0
+offset_top = 830.0
+offset_right = 1073.0
+offset_bottom = 934.0
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -26,13 +60,29 @@ flat = true
 
 [node name="Credits" type="Button" parent="." unique_id=153075210]
 layout_mode = 0
-offset_left = 829.0
-offset_top = 502.0
-offset_right = 1041.0
-offset_bottom = 576.0
+offset_left = 321.0
+offset_top = 825.0
+offset_right = 565.0
+offset_bottom = 929.0
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 64
 text = "  الفريق  "
 flat = true
+
+[node name="Label" type="Label" parent="." unique_id=512417991]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -569.0
+offset_top = 100.0
+offset_right = 602.0
+offset_bottom = 370.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 108
+text = "أحلام سعيدة"
+horizontal_alignment = 1
+vertical_alignment = 1
