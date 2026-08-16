@@ -85,11 +85,11 @@ func _build_modifier_menu() -> void:
   panel.anchor_top = 0.5
   panel.anchor_right = 0.5
   panel.anchor_bottom = 0.5
-  panel.offset_left = -200
-  panel.offset_top = -120
-  panel.offset_right = 200
-  panel.offset_bottom = 120
-  panel.custom_minimum_size = Vector2(400, 240)
+  panel.offset_left = -400
+  panel.offset_top = -300
+  panel.offset_right = 400
+  panel.offset_bottom = 450
+  panel.custom_minimum_size = Vector2(800, 750)
   modifier_menu.add_child(panel)
 
   var vbox = VBoxContainer.new()
@@ -101,7 +101,7 @@ func _build_modifier_menu() -> void:
   var title = Label.new()
   title.text = "Choose a modifier"
   title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-  title.add_theme_font_size_override("font_size", 24)
+  title.add_theme_font_size_override("font_size", 64)
   vbox.add_child(title)
 
   for i in range(3):
@@ -109,8 +109,9 @@ func _build_modifier_menu() -> void:
     button.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
     button.focus_mode = Control.FOCUS_ALL
     button.text = "Modifier"
-    button.custom_minimum_size = Vector2(0, 60)
+    button.custom_minimum_size = Vector2(0, 120)
     button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    button.add_theme_font_size_override("font_size", 48)
     var index: int = i
     button.pressed.connect(_on_modifier_pressed.bind(index))
     modifier_buttons.append(button)
@@ -223,7 +224,6 @@ func _get_spawn_position() -> Vector2:
   if active_camera:
     zoom = active_camera.zoom
 
-  # Convert viewport pixels to world-space size for correct off-screen spawns.
   var world_view_size: Vector2 = Vector2(
     viewport_size.x / max(zoom.x, 0.001),
     viewport_size.y / max(zoom.y, 0.001)

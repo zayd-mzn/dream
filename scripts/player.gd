@@ -100,6 +100,7 @@ func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("shoot") and shoot_timer.is_stopped():
     shoot_sndala()
     shoot_timer.start(shoot_cooldown)
+
   if event.is_action_pressed("special") and special_timer and special_timer.is_stopped():
     use_special_ability()
     special_timer.start()
@@ -107,20 +108,19 @@ func _unhandled_input(event: InputEvent) -> void:
 # --- Movement & Aim ---
 func handle_movement() -> void:
   var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-  velocity = input_dir * speed
-  
-  if velocity.length() > 0.01:
-    velocity = velocity.normalized() * speed
+
+  if input_dir.length() > 0.01:
+    velocity = input_dir.normalized() * speed
     $AnimatedSprite2D.play("walk")
   else:
     velocity = Vector2.ZERO
     $AnimatedSprite2D.play("idle")
-  
+
   if velocity.x > 0.0:
     sprite.flip_h = true
   elif velocity.x < 0.0:
     sprite.flip_h = false
-  
+
   move_and_slide()
 
 func handle_aim() -> void:
@@ -265,7 +265,7 @@ func update_xp_bar() -> void:
 
 func trigger_level_up() -> void:
   player_woke_up.emit()
-  if get_tree().current_scene and get_tree().current_scene.has_method("open_modifier_menu"):
+  if get_tree().current_scene and get_tree().current_scene.has_method("request_modifier_menu"):
     get_tree().current_scene.request_modifier_menu()
 
 func trigger_wake_up() -> void:

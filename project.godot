@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="dream"
-run/main_scene="uid://bcxayf32iyqpe"
+run/main_scene="uid://du7gvfsnvidq2"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[gui]
+
+theme/custom_font="uid://b6bjgn17wta21"
 
 [input]
 
