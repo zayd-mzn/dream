@@ -16,7 +16,9 @@ position = Vector2(296, 331)
 
 [node name="Sndala" parent="." unique_id=134151983 instance=ExtResource("2_sugp2")]
 position = Vector2(425, 329)
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1860606944]
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1575763302]
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=557834941]
@@ -78,10 +80,10 @@ anchor_left = 0.5
 anchor_top = 0.919
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 862.0
-offset_top = 552.0
-offset_right = 952.0
-offset_bottom = 597.0
+offset_left = 1029.0
+offset_top = 556.0
+offset_right = 1119.0
+offset_bottom = 604.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 32
@@ -94,9 +96,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 979.0
+offset_left = 814.0
 offset_top = 560.0
-offset_right = 1143.0
+offset_right = 978.0
 offset_bottom = 591.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -104,3 +106,27 @@ mouse_filter = 2
 max_value = 1.0
 value = 1.0
 show_percentage = false
+
+[node name="SpecialLabel" type="Label" parent="UI/Control" unique_id=2062845571]
+layout_mode = 0
+offset_left = 985.0
+offset_top = 598.0
+offset_right = 1145.0
+offset_bottom = 646.0
+theme_override_font_sizes/font_size = 32
+text = "قدرة خاصة "
+
+[node name="SpecialCooldown" type="ProgressBar" parent="UI/Control" unique_id=784115329]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 604.0
+offset_right = 976.0
+offset_bottom = 636.0
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control" unique_id=1793274494]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

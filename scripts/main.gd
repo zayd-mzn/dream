@@ -7,6 +7,7 @@ const MODIFIER_FACTORY = preload("res://scripts/modifiers/modifier_factory.gd")
 @onready var clock_label: Label = get_node_or_null("UI/Control/ClockLabel")
 @onready var shoot_bar: ProgressBar = get_node_or_null("UI/Control/ShootCooldown")
 @onready var shoot_label: Label = get_node_or_null("UI/Control/ShootLabel")
+@onready var special_bar: ProgressBar = get_node_or_null("UI/Control/SpecialCooldown")
 @onready var music_player: AudioStreamPlayer = $MusicPlayer
 
 var special_label: Label
@@ -66,6 +67,9 @@ func _ready() -> void:
 		shoot_bar.value = 1.0
 	if shoot_label:
 		shoot_label.modulate.a = 1.0
+	if special_bar:
+		special_bar.max_value = 1.0
+		special_bar.value = 0.0
 
 	_build_special_label()
 
@@ -359,6 +363,9 @@ func _build_special_label() -> void:
 	get_node("UI/Control").add_child(special_label)
 
 func _on_special_charges_changed(charges: int) -> void:
+	if special_bar:
+		var tween = create_tween()
+		tween.tween_property(special_bar, "value", float(charges), 0.25)
 	if not special_label:
 		return
 	if charges > 0:
