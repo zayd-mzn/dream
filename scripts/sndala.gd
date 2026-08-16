@@ -3,6 +3,9 @@ extends Area2D
 @export var speed: float = 650.0
 @export var spin_speed: float = 18.0
 @export var damage: float = 25.0
+var piercing: bool = false
+
+var _hit_count: int = 0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
@@ -25,4 +28,7 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("enemy"):
 		if area.has_method("take_damage"):
 			area.take_damage(damage)
-		queue_free()
+		if piercing and _hit_count < 1:
+			_hit_count += 1
+		else:
+			queue_free()

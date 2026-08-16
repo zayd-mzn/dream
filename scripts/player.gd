@@ -9,6 +9,7 @@ signal xp_changed(current_xp: int)
 signal health_changed(current_hp: float, max_hp: float)
 signal player_died
 signal shot_fired
+signal special_charges_changed(charges: int)
 
 # Movement & Combat parameters
 @export var base_speed: float = 220.0
@@ -33,6 +34,8 @@ var damage_bonus: float = 1.0
 var speed_multiplier: float = 1.0
 var shoot_cooldown: float = 0.2
 var triple_shot: bool = false
+var piercing: bool = false
+var special_charges: int = 0
 
 # Camera Shake Settings
 @export var max_shake_offset: float = 8.0
@@ -101,9 +104,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		shoot_sndala()
 		shoot_timer.start(shoot_cooldown)
 
-	if event.is_action_pressed("special") and special_timer and special_timer.is_stopped():
+	if event.is_action_pressed("special") and special_charges > 0:
 		use_special_ability()
-		special_timer.start()
 
 # --- Movement & Aim ---
 func handle_movement() -> void:
@@ -146,13 +148,31 @@ func _spawn_sndala(angle_offset: float) -> void:
 	var sndala = sndala_scene.instantiate()
 	if "damage" in sndala:
 		sndala.damage *= damage_bonus
+	if "piercing" in sndala:
+		sndala.piercing = piercing
 	sndala.global_position = spawn_point.global_position
 	sndala.rotation = shoot_pivot.global_rotation + angle_offset
 	get_tree().current_scene.add_child(sndala)
 
 func use_special_ability() -> void:
+	special_charges = 0
+	special_charges_changed.emit(special_charges)
 	add_trauma(0.7)
-	print("Lucid shockwave used!")
+	shot_fired.emit()
+	var count: int = 12
+	for i in range(count):
+		var angle: float = (TAU / count) * i
+		_spawn_sndala_at_angle(angle)
+
+func _spawn_sndala_at_angle(angle: float) -> void:
+	var sndala = sndala_scene.instantiate()
+	if "damage" in sndala:
+		sndala.damage *= damage_bonus
+	if "piercing" in sndala:
+		sndala.piercing = piercing
+	sndala.global_position = global_position
+	sndala.rotation = angle
+	get_tree().current_scene.add_child(sndala)
 
 # --- Damage, Health & Death ---
 func take_damage(amount: float = 15.0, source_position: Vector2 = Vector2.ZERO) -> void:
@@ -264,6 +284,8 @@ func update_xp_bar() -> void:
 		tween.tween_property(bar, "value", current_xp, 0.12)
 
 func trigger_level_up() -> void:
+	special_charges = 1
+	special_charges_changed.emit(special_charges)
 	player_woke_up.emit()
 	if get_tree().current_scene and get_tree().current_scene.has_method("request_modifier_menu"):
 		get_tree().current_scene.request_modifier_menu()
@@ -284,6 +306,9 @@ func apply_cooldown_modifier(reduction: float) -> void:
 
 func apply_triple_shot() -> void:
 	triple_shot = true
+
+func apply_piercing() -> void:
+	piercing = true
 
 func apply_max_health_modifier(extra_hp: float) -> void:
 	max_hp += extra_hp
