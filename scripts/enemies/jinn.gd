@@ -21,6 +21,8 @@ func _ready() -> void:
 
 	if sprite:
 		sprite.modulate = Color(0.95, 0.5, 1.0, 1.0)
+		sprite.play("walk")
+		sprite.play("default")
 
 func _physics_process(delta: float) -> void:
 	if target == null:

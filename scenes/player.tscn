@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://drm5t8jlhlnrf" path="res://assets/character/lhajja.png" id="3_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://b75s3pmsv3qlj" path="res://assets/life_gauge_empty.png" id="4_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://j5hoj5axyu2l" path="res://assets/life_gauge_full.png" id="5_tuyoq"]
+[ext_resource type="AudioStream" uid="uid://bq0gfok7hnsqy" path="res://assets/wili.ogg" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("3_qhqgy")
@@ -107,3 +108,7 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_lan4t")
 value = 100.0
 fill_mode = 1
 show_percentage = false
+
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1718722692]
+stream = ExtResource("6_tuyoq")
+volume_db = -10.0

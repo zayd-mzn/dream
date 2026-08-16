@@ -2,8 +2,8 @@ class_name CritChanceModifier
 extends RefCounted
 
 var id: String = "crit_chance"
-var title: String = "Lucky Break"
-var description: String = "+8% crit chance"
+var title: String = "ضربة الحظ"
+var description: String = "+8% فرصة الضربة الحاسمة"
 
 func apply(player: Node) -> void:
 	if player.has_method("apply_crit_chance"):

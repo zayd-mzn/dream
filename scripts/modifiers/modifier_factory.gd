@@ -5,7 +5,7 @@ static var last_chosen_ids: Array[String] = []
 static var acquired_ids: Array[String] = []
 
 # IDs that can only be picked once ever
-static var one_time_ids: Array[String] = ["triple_shot", "piercing"]
+static var one_time_ids: Array[String] = ["triple_shot", "piercing", "heal_on_kill"]
 
 static func _load_modifier(script_path: String) -> RefCounted:
 	var script = load(script_path)

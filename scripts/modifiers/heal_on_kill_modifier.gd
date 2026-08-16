@@ -2,8 +2,8 @@ class_name HealOnKillModifier
 extends RefCounted
 
 var id: String = "heal_on_kill"
-var title: String = "Bloodthirst"
-var description: String = "Heal 3 HP on each kill"
+var title: String = "نهم الدم"
+var description: String = "اشفِ 3 نقاط صحة عند كل قتل"
 
 func apply(player: Node) -> void:
 	if player.has_method("apply_heal_on_kill"):
