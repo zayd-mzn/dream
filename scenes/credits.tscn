@@ -23,10 +23,10 @@ offset_bottom = 203.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 64
-text = "@zayd_mzn : programming
-@adamtherookie : programming, music
-@The-Art'chitect : art 
-@mehdi-el : art"
+text = "@zayd_mzn : برمجة
+@adamtherookie : برمجة، موسيقى
+@The-Art'chitect : فن
+@mehdi-el : فن"
 horizontal_alignment = 1
 
 [node name="Back" type="Button" parent="." unique_id=1226386664]
@@ -46,5 +46,5 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 64
-text = "        BACK        "
+text = "        رجوع        "
 flat = true

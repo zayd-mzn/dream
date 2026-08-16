@@ -21,7 +21,7 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 64
-text = "    START    "
+text = "    ابدأ    "
 flat = true
 
 [node name="Credits" type="Button" parent="." unique_id=153075210]
@@ -34,5 +34,5 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 64
-text = "  CREDITS  "
+text = "  الفريق  "
 flat = true

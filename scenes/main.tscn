@@ -85,7 +85,7 @@ offset_bottom = 597.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 32
-text = "Shoot"
+text = "إطلاق"
 
 [node name="ShootCooldown" type="ProgressBar" parent="UI/Control" unique_id=1395344196]
 layout_mode = 1
