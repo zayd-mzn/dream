@@ -41,10 +41,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
-size = Vector2(263, 551)
+size = Vector2(263, 538)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yf5fn"]
-size = Vector2(264, 541)
+size = Vector2(264, 263)
 
 [node name="Player" type="CharacterBody2D" unique_id=1996761387]
 script = ExtResource("1_g2els")
@@ -58,13 +58,13 @@ animation = &"walk"
 frame_progress = 0.35874745
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=619286443]
-position = Vector2(14.5, -14.5)
+position = Vector2(14.5, -8)
 shape = SubResource("RectangleShape2D_g4v7s")
 
 [node name="HitBox" type="Area2D" parent="." unique_id=13808891]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1734694498]
-position = Vector2(11, -12.5)
+position = Vector2(11, 126.5)
 shape = SubResource("RectangleShape2D_yf5fn")
 
 [node name="SpecialCooldown" type="Timer" parent="." unique_id=1385616625]

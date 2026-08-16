@@ -1,8 +1,37 @@
 [gd_scene format=3 uid="uid://e1py5clfkasc"]
 
 [ext_resource type="Script" uid="uid://chaeg4obc2n0u" path="res://scripts/enemies/cockroach.gd" id="1_n7x1u"]
-[ext_resource type="Script" path="res://scripts/enemies/enemy_hitbox.gd" id="2_5y1xv"]
-[ext_resource type="Texture2D" uid="uid://c7trk55b6geo3" path="res://icon.svg" id="2_yiv8g"]
+[ext_resource type="Script" uid="uid://dx412ucc74kck" path="res://scripts/enemies/enemy_hitbox.gd" id="2_5y1xv"]
+[ext_resource type="Texture2D" uid="uid://dy5f3toi7n4tb" path="res://assets/ennemies/cockroach.png" id="3_gar2w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yiv8g"]
+atlas = ExtResource("3_gar2w")
+region = Rect2(0, 0, 764, 488)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ev27m"]
+atlas = ExtResource("3_gar2w")
+region = Rect2(764, 0, 764, 488)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87ipr"]
+atlas = ExtResource("3_gar2w")
+region = Rect2(1528, 0, 764, 488)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e5e46"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yiv8g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ev27m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87ipr")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e46"]
 size = Vector2(110, 110)
@@ -12,10 +41,13 @@ script = ExtResource("1_n7x1u")
 move_speed = 50.0
 xp_value = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=899802083]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=481254341]
 modulate = Color(1, 0, 0, 1)
-scale = Vector2(2, 2)
-texture = ExtResource("2_yiv8g")
+texture_filter = 1
+position = Vector2(1131, 1829.0001)
+scale = Vector2(15, 15)
+sprite_frames = SubResource("SpriteFrames_e5e46")
+frame_progress = 0.47898725
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1350815176]
 scale = Vector2(2, 2)
