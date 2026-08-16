@@ -18,12 +18,18 @@ var enemy_scenes: Array[PackedScene] = [
   preload("res://scenes/enemies/cockroach_fast.tscn"),
   preload("res://scenes/enemies/cockroach_big.tscn")
 ]
+var rare_enemy_scenes: Array[PackedScene] = [
+  preload("res://scenes/enemies/jinn.tscn")
+]
 var modifier_menu: Control
 var modifier_buttons: Array[Button] = []
+var game_over_overlay: Control
+var restart_button: Button
 
 func _ready() -> void:
   _setup_spawn_timer()
   _build_modifier_menu()
+  _build_game_over_overlay()
 
   if player:
     if player.has_signal("xp_changed"):
@@ -175,7 +181,7 @@ func _on_spawn_timer_timeout() -> void:
   spawn_timer.start()
 
 func _spawn_enemy() -> void:
-  if not player:
+  if not player or get_tree().paused:
     return
 
   var enemy_scene: PackedScene = _choose_enemy_scene()
@@ -187,12 +193,21 @@ func _spawn_enemy() -> void:
 
 func _choose_enemy_scene() -> PackedScene:
   var time_based_roll: float = elapsed_time
+
   if time_based_roll >= 45.0:
+    if randf() < 0.17:
+      return rare_enemy_scenes.pick_random()
     return enemy_scenes.pick_random()
   if time_based_roll >= 25.0:
+    if randf() < 0.12:
+      return rare_enemy_scenes.pick_random()
     return enemy_scenes[randi_range(1, enemy_scenes.size() - 1)]
   if time_based_roll >= 12.0:
+    if randf() < 0.08:
+      return rare_enemy_scenes.pick_random()
     return enemy_scenes[randi_range(0, 1)]
+  if randf() < 0.04:
+    return rare_enemy_scenes.pick_random()
   return enemy_scenes[0]
 
 func _get_spawn_position() -> Vector2:
@@ -254,7 +269,68 @@ func _on_player_woke_up() -> void:
     xp_bar.value = xp_bar.max_value
 
 func _on_player_died() -> void:
+  if not game_over_overlay:
+    _build_game_over_overlay()
+
+  if game_over_overlay:
+    game_over_overlay.visible = true
+
+  get_tree().paused = true
   print("Game Over: Player Died!")
+
+func _restart_game() -> void:
+  get_tree().paused = false
+  get_tree().reload_current_scene()
+
+func _build_game_over_overlay() -> void:
+  if not is_instance_valid(get_node_or_null("UI")):
+    return
+
+  game_over_overlay = Control.new()
+  game_over_overlay.name = "GameOverOverlay"
+  game_over_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+  game_over_overlay.visible = false
+  game_over_overlay.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+  $UI.add_child(game_over_overlay)
+
+  var darken = ColorRect.new()
+  darken.color = Color(0.0, 0.0, 0.0, 0.72)
+  darken.set_anchors_preset(Control.PRESET_FULL_RECT)
+  darken.mouse_filter = Control.MOUSE_FILTER_IGNORE
+  game_over_overlay.add_child(darken)
+
+  var panel = PanelContainer.new()
+  panel.anchor_left = 0.5
+  panel.anchor_top = 0.5
+  panel.anchor_right = 0.5
+  panel.anchor_bottom = 0.5
+  panel.offset_left = -200
+  panel.offset_top = -110
+  panel.offset_right = 200
+  panel.offset_bottom = 110
+  game_over_overlay.add_child(panel)
+
+  var vbox = VBoxContainer.new()
+  vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+  vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+  panel.add_child(vbox)
+
+  var title = Label.new()
+  title.text = "You Died"
+  title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+  title.add_theme_font_size_override("font_size", 32)
+  vbox.add_child(title)
+
+  var subtitle = Label.new()
+  subtitle.text = "The jinns took the night."
+  subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+  vbox.add_child(subtitle)
+
+  restart_button = Button.new()
+  restart_button.text = "Restart Run"
+  restart_button.custom_minimum_size = Vector2(180, 48)
+  restart_button.pressed.connect(_restart_game)
+  vbox.add_child(restart_button)
 
 func _on_player_shot_fired() -> void:
   shoot_cooldown_elapsed = 0.0

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dftw7xy8n7v6y"]
+
+[ext_resource type="Script" path="res://scripts/enemies/jinn_projectile.gd" id="1_4abcx"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_projectile"]
+size = Vector2(34, 34)
+
+[node name="jinn_projectile" type="Area2D"]
+script = ExtResource("1_4abcx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_projectile")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-20, -20, 40, 40)

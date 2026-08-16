@@ -108,6 +108,19 @@ func _unhandled_input(event: InputEvent) -> void:
 func handle_movement() -> void:
   var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
   velocity = input_dir * speed
+  
+  if velocity.length() > 0.01:
+    velocity = velocity.normalized() * speed
+    $AnimatedSprite2D.play("walk")
+  else:
+    velocity = Vector2.ZERO
+    $AnimatedSprite2D.play("idle")
+  
+  if velocity.x > 0.0:
+    sprite.flip_h = true
+  elif velocity.x < 0.0:
+    sprite.flip_h = false
+  
   move_and_slide()
 
 func handle_aim() -> void:
